@@ -48,7 +48,7 @@ bool CoreHost::isHostFxrLoaded()
     return loadResult == LoadHostFxrResult::Loaded;
 }
 
-int CoreHost::run(QGuiApplication& app, QQmlApplicationEngine& engine, QString dotnetAssembly, QList<QByteArray> args)
+int CoreHost::run(QGuiApplication& app, QQmlApplicationEngine& engine, runCallback runCallback, QString dotnetAssembly, QList<QByteArray> args)
 {
     loadHostFxr();
 
@@ -61,9 +61,12 @@ int CoreHost::run(QGuiApplication& app, QQmlApplicationEngine& engine, QString d
     appPtr.sprintf("%llu", (quintptr)&app);
     QString enginePtr;
     enginePtr.sprintf("%llu", (quintptr)&engine);
+    QString callbackPtr;
+    callbackPtr.sprintf("%llu", (quintptr)runCallback);
 
     execArgs.push_back(appPtr.toLocal8Bit());
     execArgs.push_back(enginePtr.toLocal8Bit());
+    execArgs.push_back(callbackPtr.toLocal8Bit());
 
     for (QByteArray arg : args) {
         execArgs.push_back(arg);

@@ -194,4 +194,8 @@ Q_DECL_EXPORT void qqmlapplicationengine_addImportPath(QQmlApplicationEngineCont
     container->qmlEngine->addImportPath(pathString);
 }
 
+Q_DECL_EXPORT QQmlApplicationEngine* qqmlapplicationengine_internalPointer(QQmlApplicationEngineContainer* container) {
+    return container->qmlEngine;
+}
+
 }

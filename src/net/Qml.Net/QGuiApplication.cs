@@ -74,6 +74,8 @@ namespace Qml.Net
             Interop.QGuiApplication.RequestTrigger(Handle);
         }
 
+        internal IntPtr InternalPointer => Interop.QGuiApplication.InternalPointer(Handle);
+
         private void Trigger()
         {
             Action action;
@@ -156,5 +158,7 @@ namespace Qml.Net
         void RequestTrigger(IntPtr app);
         [NativeSymbol(Entrypoint = "qguiapplication_exit")]
         void Exit(IntPtr app, int returnCode);
+        [NativeSymbol(Entrypoint = "qguiapplication_internalPointer")]
+        IntPtr InternalPointer(IntPtr app);
     }
 }

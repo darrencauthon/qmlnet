@@ -72,4 +72,8 @@ Q_DECL_EXPORT void qguiapplication_exit(QGuiApplicationContainer* container, int
     container->guiApp->exit(returnCode);
 }
 
+Q_DECL_EXPORT QGuiApplication* qguiapplication_internalPointer(QGuiApplicationContainer* container) {
+    return container->guiApp;
+}
+
 }

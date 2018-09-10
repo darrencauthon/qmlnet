@@ -4,19 +4,20 @@ namespace Qml.Net.Hosting
 {
     class Program
     {
+        public class TestObject
+        {
+            public void TestMethod()
+            {
+                Console.WriteLine("test method");
+            }
+        }
+        
         static int Main(string[] _)
         {
-            return Host.Run(_, (args, app, engine) =>
+            return Host.Run(_, (args, app, engine, runCallback) =>
             {
-                Console.WriteLine("Running");
-                Console.WriteLine("Args " + args.Length);
-                foreach(var arg in args)
-                {
-                    Console.WriteLine(arg);
-                }
-                int result = app.Exec();
-                Console.WriteLine("Ran: " + result);
-                return result;
+                QQmlApplicationEngine.RegisterType<TestObject>("test");
+                return runCallback();
             });
         }
     }

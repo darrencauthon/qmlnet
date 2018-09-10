@@ -30,6 +30,13 @@ namespace Qml.Net
         {
             Interop.QQmlApplicationEngine.LoadData(Handle, data);
         }
+        
+        public void AddImportPath(string path)
+        {
+            Interop.QQmlApplicationEngine.AddImportPath(Handle, path);
+        }
+        
+        internal IntPtr InternalPointer => Interop.QQmlApplicationEngine.InternalPointer(Handle);
 
         public static int RegisterType<T>(string uri, int versionMajor = 1, int versionMinor = 0)
         {
@@ -53,11 +60,6 @@ namespace Qml.Net
         public static void ActivateMVVMBehavior()
         {
             InteropBehaviors.RegisterQmlInteropBehavior(new MvvmQmlInteropBehavior(), false);
-        }
-
-        public void AddImportPath(string path)
-        {
-            Interop.QQmlApplicationEngine.AddImportPath(Handle, path);
         }
 
         protected override void DisposeUnmanaged(IntPtr ptr)
@@ -84,5 +86,8 @@ namespace Qml.Net
 
         [NativeSymbol(Entrypoint = "qqmlapplicationengine_addImportPath")]
         void AddImportPath(IntPtr engine, [MarshalAs(UnmanagedType.LPWStr), CallerFree]string path);
+        
+        [NativeSymbol(Entrypoint = "qqmlapplicationengine_internalPointer")]
+        IntPtr InternalPointer(IntPtr app);
     }
 }

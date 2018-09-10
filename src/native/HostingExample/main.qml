@@ -1,5 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
+import test 1.0
 
 ApplicationWindow {
     visible: true
@@ -28,6 +29,21 @@ ApplicationWindow {
         }
         TabButton {
             text: qsTr("Page 2")
+        }
+    }
+
+    Timer {
+        interval: 500; running: true; repeat: true
+        onTriggered: {
+            test.testMethod()
+        }
+    }
+
+    TestObject {
+        id: test
+        Component.onCompleted: {
+            console.log('loaded');
+            test.testMethod()
         }
     }
 }
