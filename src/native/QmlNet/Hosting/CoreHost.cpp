@@ -48,29 +48,30 @@ bool CoreHost::isHostFxrLoaded()
     return loadResult == LoadHostFxrResult::Loaded;
 }
 
-int CoreHost::run(QGuiApplication& app, QQmlApplicationEngine& engine, QString dotnetAssembly)
+int CoreHost::run(QGuiApplication& app, QQmlApplicationEngine& engine, QString dotnetAssembly, QList<QByteArray> args)
 {
     loadHostFxr();
 
-    QList<QByteArray> args;
-    args.push_back("/usr/local/share/dotnet/dotnet");
-    args.push_back("exec");
-    args.push_back(dotnetAssembly.toLocal8Bit());
-
-    long t = (long)&app;
-    qDebug("test: %lu", t);
+    QList<QByteArray> execArgs;
+    execArgs.push_back("/usr/local/share/dotnet/dotnet");
+    execArgs.push_back("exec");
+    execArgs.push_back(dotnetAssembly.toLocal8Bit());
 
     QString appPtr;
-    appPtr.sprintf("%lu", (quintptr)&app);
+    appPtr.sprintf("%llu", (quintptr)&app);
     QString enginePtr;
-    enginePtr.sprintf("%lu", (quintptr)&engine);
-    args.push_back(appPtr.toLocal8Bit());
-    args.push_back(enginePtr.toLocal8Bit());
+    enginePtr.sprintf("%llu", (quintptr)&engine);
+
+    execArgs.push_back(appPtr.toLocal8Bit());
+    execArgs.push_back(enginePtr.toLocal8Bit());
+
+    for (QByteArray arg : args) {
+        execArgs.push_back(arg);
+    }
 
     std::vector<const char*> hostFxrArgs;
-    QList<QByteArray>::iterator i;
-    for (i = args.begin(); i != args.end(); ++i) {
-        hostFxrArgs.push_back(const_cast<char*>(i->constData()));
+    for (QByteArray arg : execArgs) {
+        hostFxrArgs.push_back(arg);
     }
     int size = static_cast<int>(hostFxrArgs.size());
 

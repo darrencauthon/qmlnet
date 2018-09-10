@@ -23,7 +23,7 @@ public:
     static LoadHostFxrResult loadHostFxr();
     static bool isHostFxrLoaded();
 
-    static int run(QGuiApplication& app, QQmlApplicationEngine& engine, QString dotnetAssembly);
+    static int run(QGuiApplication& app, QQmlApplicationEngine& engine, QString dotnetAssembly, QList<QByteArray> args = QList<QByteArray>());
 
     static QString findClrPath();
     static QString findHostFxrPath();

@@ -4,24 +4,20 @@ namespace Qml.Net.Hosting
 {
     class Program
     {
-        static int Main(string[] args)
+        static int Main(string[] _)
         {
-            Console.WriteLine("Hello World!");
-            Console.WriteLine($"arg count: {args.Length}");
-            var appPtr = new IntPtr((long)ulong.Parse(args[0]));
-            var enginePtr = new IntPtr((long)ulong.Parse(args[1]));
-
-            Console.WriteLine(appPtr);
-            Console.WriteLine(enginePtr);
-            
-            using (var app = new QGuiApplication(appPtr))
+            return Host.Run(_, (args, app, engine) =>
             {
-                using (var engine = new QQmlApplicationEngine(enginePtr))
+                Console.WriteLine("Running");
+                Console.WriteLine("Args " + args.Length);
+                foreach(var arg in args)
                 {
-                    app.Exec();
-                    return 3;
+                    Console.WriteLine(arg);
                 }
-            }
+                int result = app.Exec();
+                Console.WriteLine("Ran: " + result);
+                return result;
+            });
         }
     }
 }
