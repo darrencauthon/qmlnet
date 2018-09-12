@@ -10,3 +10,5 @@ unix {
     LIBS += -ldl
 }
 
+
+#QMAKE_LFLAGS += -Wl,-export_dynamic
