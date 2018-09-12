@@ -8,7 +8,8 @@ SOURCES += \
 
 unix {
     LIBS += -ldl
+} else {
+    # Windows needs this to be able to perform GetProcAddress
+    # on the currently running executable.
+    QMAKE_LFLAGS += /FIXED:NO
 }
-
-
-#QMAKE_LFLAGS += -Wl,-export_dynamic

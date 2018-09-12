@@ -19,10 +19,16 @@
 #endif
 
 static void* getExportedFunction(const char* symbolName) {
+#ifdef _WIN32
+    HMODULE library = GetModuleHandle(nullptr);
+    FARPROC symbol = GetProcAddress(library, symbolName);
+    return (void*)symbol;
+#else
     void* dll = dlopen(nullptr, RTLD_LAZY);
     void* result = dlsym(dll, symbolName);
     dlclose(dll);
     return result;
+#endif
 }
 
 QList<QString> CoreHost::getPotientialDotnetRoots()
