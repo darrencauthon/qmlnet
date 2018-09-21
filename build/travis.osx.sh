@@ -24,7 +24,7 @@ if [ ! -e $QT_DIR/5.11.1 ]; then
 
     echo "Mounting and extracting Qt..."
     hdiutil mount ${INSTALLER}
-    export QT_CI_PACKAGES=qt.qt5.5111.qtvirtualkeyboard.clang_64,qt.qt5.5111.clang_64
+    export QT_CI_PACKAGES=qt.qt5.5111.qtvirtualkeyboard.clang_64,qt.qt5.5111.qtwebengine.clang_64,qt.qt5.5111.clang_64
     extract-qt-installer $APPFILE $QT_DIR
 
 fi
