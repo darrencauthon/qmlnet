@@ -15,7 +15,7 @@ namespace Qml.Net.Internal.Qml
             
         }
 
-        public bool IsCallable => Interop.NetJsValue.IsCallable(Handle);
+        public bool IsCallable => Interop.IsCallable(Handle);
 
         public bool IsArray => Interop.NetJsValue.IsArray(Handle);
 

@@ -1,10 +1,12 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using AdvancedDLSupport;
+using Qml.Net.Internal.Platform.Loader;
+using Qml.Net.Internal.Platform.PathResolver;
 using Qml.Net.Internal.Qml;
 using Qml.Net.Internal.Types;
 
@@ -18,6 +20,8 @@ namespace Qml.Net.Internal
         
         static Interop()
         {
+            Environment.SetEnvironmentVariable("LD_LIBRARY_PATH", "/home/pknopf/git/x3/abra/app/src/net/submodules/qmlnet/src/native/build-QmlNet-Desktop_Qt_5_12_0_GCC_64bit2-Debug");
+            //Environment.SetEnvironmentVariable("LD_LIBRARY_PATH", "/home/pknopf/git/x3/abra/app/src/net/submodules/qmlnet/src/native/build-QmlNet-Desktop_Qt_5_10_1_GCC_64bit-Debug");
             string pluginsDirectory = null;
             string qmlDirectory = null;
             string libDirectory = null;
@@ -126,6 +130,16 @@ namespace Qml.Net.Internal
 
             var cb = DefaultCallbacks.Callbacks();
             Callbacks.RegisterCallbacks(ref cb);
+
+
+            {
+                var resolver = new DynamicLinkLibraryPathResolver();
+                var result = resolver.Resolve("QmlNet");
+                var loader = PlatformLoaderBase.SelectPlatformLoader();
+                var lib = loader.LoadLibrary(result.Path);
+                var s = loader.LoadSymbol(lib, "net_js_value_isCallable");
+                IsCallable = Marshal.GetDelegateForFunctionPointer<IsCallableDel>(s);
+            }
         }
 
         // ReSharper disable PossibleInterfaceMemberAmbiguity
@@ -155,6 +169,10 @@ namespace Qml.Net.Internal
         {
 
         }
+
+        public delegate bool IsCallableDel(IntPtr test);
+        
+        public static IsCallableDel IsCallable { get; set; }
         
         public static ICallbacksIterop Callbacks { get; }
 

@@ -82,7 +82,13 @@ Q_DECL_EXPORT void net_js_value_destroy(NetJSValueContainer* jsValueContainer) {
 }
 
 Q_DECL_EXPORT bool net_js_value_isCallable(NetJSValueContainer* jsValueContainer) {
-    return jsValueContainer->jsValue->isCallable();
+    bool result = jsValueContainer->jsValue->isCallable();
+    return result;
+    if (result) {
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 Q_DECL_EXPORT bool net_js_value_isArray(NetJSValueContainer* jsValueContainer) {
